@@ -3,3 +3,4 @@ uvicorn[standard]>=0.20
 scikit-learn>=1.2
 joblib>=1.2
 pandas>=1.5
+python-dotenv>=1.0

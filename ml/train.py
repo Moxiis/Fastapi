@@ -6,6 +6,7 @@ RandomForestRegressor and saves the model with joblib.
 Run from the `Fastapi` folder with: `python -m ml.train` or
 `python ml/train.py`.
 """
+
 import os
 
 import joblib
@@ -13,8 +14,9 @@ from sklearn.datasets import fetch_california_housing
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
-MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
-MODEL_PATH = os.path.join(MODEL_DIR, "house_price_model.joblib")
+from ..app.core.config import settings
+
+MODEL_PATH = settings.model_path
 
 
 def train_and_save(model_path: str = MODEL_PATH) -> None:
@@ -23,7 +25,9 @@ def train_and_save(model_path: str = MODEL_PATH) -> None:
     X = data.data
     y = data.target
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
     print("Training RandomForestRegressor (this may take a short while)...")
     model = RandomForestRegressor(n_estimators=50, random_state=42, n_jobs=-1)

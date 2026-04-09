@@ -1,3 +1,8 @@
+from Fastapi.app.core.logger import configure_logging
+
+# initialize logging as early as possible
+configure_logging()
+
 from pydantic import BaseModel
 from sqlalchemy import Boolean, Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -42,7 +47,7 @@ app = FastAPI()
 
 # Register ML prediction router if available
 try:
-    from ml.router import router as ml_router
+    from Fastapi.app.api.router import router as ml_router
 
     app.include_router(ml_router)
 except Exception:
