@@ -1,3 +1,10 @@
+from app.core.logger import configure_logging
+
+# initialize logging and ensure DB tables exist as early as possible
+configure_logging()
+from app.core.storage import create_storage_tables
+create_storage_tables()
+
 from pydantic import BaseModel
 from sqlalchemy import Boolean, Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -42,7 +49,7 @@ app = FastAPI()
 
 # Register ML prediction router if available
 try:
-    from ml.router import router as ml_router
+    from app.api.router import router as ml_router
 
     app.include_router(ml_router)
 except Exception:
