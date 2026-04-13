@@ -3,6 +3,7 @@ from app.core.logger import configure_logging
 # initialize logging and ensure DB tables exist as early as possible
 configure_logging()
 from app.core.storage import create_storage_tables
+
 create_storage_tables()
 
 from pydantic import BaseModel

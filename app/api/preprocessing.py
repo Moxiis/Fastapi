@@ -1,12 +1,14 @@
-from typing import List, Any, Optional
 import math
+from typing import Any, List, Optional
 
 import numpy as np
 
 from ..core.storage import store_preprocessed
 
 
-def preprocess_input(instance: Any, order: List[str], svc: Optional[object] = None) -> List[List[float]]:
+def preprocess_input(
+    instance: Any, order: List[str], svc: Optional[object] = None
+) -> List[List[float]]:
     """Convert a validated input instance into a numeric feature row.
 
     If a `svc` is provided and the service exposes a fitted `preprocessor`, it
@@ -31,7 +33,12 @@ def preprocess_input(instance: Any, order: List[str], svc: Optional[object] = No
             feature_row = transformed.tolist()[0]
             # persist transformed features
             try:
-                store_preprocessed({"features": feature_row, "model_version": getattr(svc, "model_version", None)})
+                store_preprocessed(
+                    {
+                        "features": feature_row,
+                        "model_version": getattr(svc, "model_version", None),
+                    }
+                )
             except Exception:
                 pass
             return [feature_row]
@@ -52,7 +59,12 @@ def preprocess_input(instance: Any, order: List[str], svc: Optional[object] = No
 
     # Persist the preprocessed features for traceability
     try:
-        store_preprocessed({"features": feature_row, "model_version": getattr(svc, "model_version", None)})
+        store_preprocessed(
+            {
+                "features": feature_row,
+                "model_version": getattr(svc, "model_version", None),
+            }
+        )
     except Exception:
         pass
 

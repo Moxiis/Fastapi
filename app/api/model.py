@@ -1,13 +1,13 @@
-import os
 import json
+import os
 from functools import lru_cache
 from typing import Any, Optional
 
 import joblib
 import numpy as np
+from sklearn.exceptions import NotFittedError
 
 from ..core.config import settings
-from sklearn.exceptions import NotFittedError
 
 
 class ModelService:
@@ -41,7 +41,9 @@ class ModelService:
             return
 
         # Try to find a registry under the project's ml/models folder
-        base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "ml", "models"))
+        base = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "..", "ml", "models")
+        )
         registry = os.path.join(base, "registry.json")
         if os.path.exists(registry):
             try:
@@ -54,7 +56,9 @@ class ModelService:
                     candidate_pre = os.path.join(version_dir, "preprocessor.joblib")
                     if os.path.exists(candidate_model):
                         self._model_path = candidate_model
-                        self._preprocessor_path = candidate_pre if os.path.exists(candidate_pre) else None
+                        self._preprocessor_path = (
+                            candidate_pre if os.path.exists(candidate_pre) else None
+                        )
                         self._version = latest
                         self._resolved = True
                         return
@@ -63,7 +67,9 @@ class ModelService:
                 pass
 
         # Fallbacks: configured settings.model_path or a project-level ml/models file
-        if getattr(settings, "model_path", None) and os.path.exists(settings.model_path):
+        if getattr(settings, "model_path", None) and os.path.exists(
+            settings.model_path
+        ):
             self._model_path = settings.model_path
             self._preprocessor_path = None
             self._version = os.path.basename(self._model_path)

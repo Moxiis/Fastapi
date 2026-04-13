@@ -1,16 +1,15 @@
 import logging
+import traceback
 
 from pydantic import ValidationError
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 
 from ..core.storage import store_prediction
 from ..validation.validation import validate_and_store
 from .model import ModelService, get_model_service
 from .preprocessing import preprocess_input
 from .schemas import HousePriceInput, HousePriceOutput
-from fastapi import BackgroundTasks
-import traceback
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +97,9 @@ def predict_house_price(
         logger.exception("Failed to persist prediction")
 
     # Response model will perform final validation/serialization
-    return HousePriceOutput(predicted_price=predicted_price, model_version_id=str(model_version))
+    return HousePriceOutput(
+        predicted_price=predicted_price, model_version_id=str(model_version)
+    )
 
 
 @router.post("/train", summary="Trigger model training from DB historical data")

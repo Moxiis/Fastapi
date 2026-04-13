@@ -7,8 +7,8 @@ Run from the `Fastapi` folder with: `python -m ml.train` or
 `python ml/train.py`.
 """
 
-import os
 import json
+import os
 from datetime import datetime
 from typing import Optional
 
@@ -17,12 +17,10 @@ import numpy as np
 from sklearn.datasets import fetch_california_housing
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-
-from app.core.config import settings
 
 
 class ClipOutliers:
@@ -70,7 +68,11 @@ def _write_registry(models_dir: str, version_id: str, meta: dict) -> None:
         json.dump(data, f, indent=2)
 
 
-def train_and_save(models_dir: Optional[str] = None, X: Optional[np.ndarray] = None, y: Optional[np.ndarray] = None) -> dict:
+def train_and_save(
+    models_dir: Optional[str] = None,
+    X: Optional[np.ndarray] = None,
+    y: Optional[np.ndarray] = None,
+) -> dict:
     """Train a model, fit a small preprocessor, evaluate against a simple
     baseline, and register the model if it improves on the baseline.
 
@@ -113,7 +115,9 @@ def train_and_save(models_dir: Optional[str] = None, X: Optional[np.ndarray] = N
 
     # Baseline: median predictor
     baseline_pred = np.median(y_train)
-    baseline_rmse = float(np.sqrt(mean_squared_error(y_test, np.full_like(y_test, baseline_pred))))
+    baseline_rmse = float(
+        np.sqrt(mean_squared_error(y_test, np.full_like(y_test, baseline_pred)))
+    )
 
     print(f"Model RMSE: {rmse:.4f}, Baseline RMSE: {baseline_rmse:.4f}")
 
@@ -123,7 +127,9 @@ def train_and_save(models_dir: Optional[str] = None, X: Optional[np.ndarray] = N
         return {"registered": False, "rmse": rmse, "baseline_rmse": baseline_rmse}
 
     # Save model + preprocessor under a new version
-    models_dir = models_dir or os.path.abspath(os.path.join(os.path.dirname(__file__), "models"))
+    models_dir = models_dir or os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "models")
+    )
     version_id = datetime.utcnow().strftime("v%Y%m%d%H%M%S")
     version_dir = os.path.join(models_dir, version_id)
     os.makedirs(version_dir, exist_ok=True)
@@ -144,7 +150,12 @@ def train_and_save(models_dir: Optional[str] = None, X: Optional[np.ndarray] = N
     _write_registry(models_dir, version_id, meta)
 
     print(f"Registered new model version: {version_id}")
-    return {"registered": True, "version_id": version_id, "rmse": rmse, "baseline_rmse": baseline_rmse}
+    return {
+        "registered": True,
+        "version_id": version_id,
+        "rmse": rmse,
+        "baseline_rmse": baseline_rmse,
+    }
 
 
 if __name__ == "__main__":

@@ -1,10 +1,9 @@
 import logging
 from logging.handlers import RotatingFileHandler
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
 from .config import settings
-
 
 # Ensure logs directory exists
 LOG_DIR: Path = settings.log_dir
