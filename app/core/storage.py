@@ -6,7 +6,7 @@ the original function names helps preserve existing callsites.
 
 from . import db
 
-# TODO: remove storage.py and just expose db functions directly here to simplify the codebase and avoid unnecessary indirection
+# AGENT: remove storage.py and just expose db functions directly here to simplify the codebase and avoid unnecessary indirection
 
 
 def create_storage_tables() -> None:

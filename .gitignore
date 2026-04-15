@@ -12,5 +12,8 @@ wheels/
 # Environment files
 .env
 
+# models
+ml/models/
+
 # testing file
 testing.ipynb

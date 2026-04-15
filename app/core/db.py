@@ -31,7 +31,7 @@ SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
 
-# TODO: removed rawinput
+# AGENT: removed rawinput
 class RawInput(Base):
     __tablename__ = "raw_inputs"
     id = Column(Integer, primary_key=True, index=True)
@@ -39,7 +39,7 @@ class RawInput(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
-# TODO: remove Preprocessed
+# AGENT: remove Preprocessed
 class Preprocessed(Base):
     __tablename__ = "preprocessed"
     id = Column(Integer, primary_key=True, index=True)
@@ -48,7 +48,7 @@ class Preprocessed(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
-# TODO: change input from Json to tabular data with columns for each feature and target to support more structured storage and querying
+# AGENT: change input from Json to tabular data with columns for each feature and target to support more structured storage and querying
 class Prediction(Base):
     __tablename__ = "predictions"
     id = Column(Integer, primary_key=True, index=True)
